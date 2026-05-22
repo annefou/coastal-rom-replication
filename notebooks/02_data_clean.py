@@ -132,15 +132,15 @@ def build_wse_dataset(stations: list, storm: str) -> xr.Dataset:
 
 def load_buoy_csv(path: Path) -> pd.DataFrame:
     if not path.exists() or path.stat().st_size < 200:
-        return pd.DataFrame(columns=["time", "WVHT", "DPD", "MWD"])
+        return pd.DataFrame(columns=["time", "WVHT", "DPD", "MWD", "WSPD"])
     df = pd.read_csv(path, parse_dates=["time"])
-    keep = [c for c in ("time", "WVHT", "DPD", "APD", "MWD") if c in df.columns]
+    keep = [c for c in ("time", "WVHT", "DPD", "APD", "MWD", "WSPD") if c in df.columns]
     df = df[keep].dropna(subset=["time"]).drop_duplicates(subset=["time"])
     return df
 
 
 def build_waves_dataset(buoys: list, storm: str) -> xr.Dataset:
-    """Build a (time, buoy) xarray Dataset for Hs/Tp/MWD in the storm window."""
+    """Build a (time, buoy) xarray Dataset for Hs/Tp/MWD/WSPD in the storm window."""
     year = 2008 if storm == "ike" else 2021
     t_start, t_end = WINDOWS[storm]
     # NDBC standard-met cadence is 50 min - resample to a regular 1-h index for both storms.
@@ -149,7 +149,9 @@ def build_waves_dataset(buoys: list, storm: str) -> xr.Dataset:
     hs = np.full((len(time_index), len(buoys)), np.nan, dtype="float32")
     tp = np.full((len(time_index), len(buoys)), np.nan, dtype="float32")
     mwd = np.full((len(time_index), len(buoys)), np.nan, dtype="float32")
+    wspd = np.full((len(time_index), len(buoys)), np.nan, dtype="float32")
     n_obs = np.zeros(len(buoys), dtype="int32")
+    n_obs_wspd = np.zeros(len(buoys), dtype="int32")
     for i, b in enumerate(buoys):
         df = load_buoy_csv(RAW_DIR / "waves" / f"{b['id']}_{year}.csv")
         if df.empty:
@@ -161,7 +163,7 @@ def build_waves_dataset(buoys: list, storm: str) -> xr.Dataset:
         # wind rows sit at :00, :10, :20. Nearest-match would prefer the :00 row
         # (NaN WVHT) over the :40 valid Hs row. Resample each variable on its
         # own valid rows to the regular hourly grid.
-        for col, arr in (("WVHT", hs), ("DPD", tp), ("MWD", mwd)):
+        for col, arr in (("WVHT", hs), ("DPD", tp), ("MWD", mwd), ("WSPD", wspd)):
             if col not in df.columns:
                 continue
             valid = df[col].dropna()
@@ -171,12 +173,15 @@ def build_waves_dataset(buoys: list, storm: str) -> xr.Dataset:
             arr[:, i] = r.to_numpy(dtype="float32")
         if "WVHT" in df.columns:
             n_obs[i] = int(np.isfinite(hs[:, i]).sum())
+        n_obs_wspd[i] = int(np.isfinite(wspd[:, i]).sum())
     ds = xr.Dataset(
         data_vars={
             "Hs": (("time", "buoy"), hs, {"long_name": "Significant wave height", "units": "m"}),
             "Tp": (("time", "buoy"), tp, {"long_name": "Dominant wave period", "units": "s"}),
             "MWD": (("time", "buoy"), mwd, {"long_name": "Mean wave direction", "units": "degree"}),
+            "WSPD": (("time", "buoy"), wspd, {"long_name": "Wind speed (10-m, NDBC stdmet)", "units": "m s-1"}),
             "n_obs_Hs": (("buoy",), n_obs, {"long_name": "Valid Hs observations in window"}),
+            "n_obs_WSPD": (("buoy",), n_obs_wspd, {"long_name": "Valid wind-speed observations in window"}),
         },
         coords={
             "time": ("time", time_index.tz_convert(None).to_pydatetime()),

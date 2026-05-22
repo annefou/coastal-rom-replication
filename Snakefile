@@ -19,6 +19,9 @@ rule all:
         f"{FIGURES}/gauge_map.png",
         f"{FIGURES}/wse_timeseries_example.png",
         f"{FIGURES}/main_result.png",
+        f"{FIGURES}/fig10_11_obs_equivalent.png",
+        f"{FIGURES}/fig7_8_buoy_winds_equivalent.png",
+        f"{FIGURES}/fig5_6_obs_equivalent.png",
 
 
 # ---------- 01: Data download ----------
@@ -70,11 +73,18 @@ rule analysis:
 rule figures:
     input:
         f"{RESULTS}/headline_comparison.csv",
+        f"{RESULTS}/obs_wse_peaks.csv",
+        f"{RESULTS}/obs_wave_peaks.csv",
         f"{DATA}/processed/ike/wse.nc",
         f"{DATA}/processed/ida/wse.nc",
+        f"{DATA}/processed/ike/waves.nc",
+        f"{DATA}/processed/ida/waves.nc",
     output:
         f"{FIGURES}/gauge_map.png",
         f"{FIGURES}/wse_timeseries_example.png",
         f"{FIGURES}/main_result.png",
+        f"{FIGURES}/fig10_11_obs_equivalent.png",
+        f"{FIGURES}/fig7_8_buoy_winds_equivalent.png",
+        f"{FIGURES}/fig5_6_obs_equivalent.png",
     shell:
         "cd {NOTEBOOKS} && jupytext --to notebook --execute 04_figures.py"

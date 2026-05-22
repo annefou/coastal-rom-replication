@@ -89,7 +89,13 @@ Scope of the Validated label, made explicit so that a CiTO-only citer cannot mis
 Numerical results, test statistics, model coefficients. Read directly from `results/`.
 
 ```
-Source files: results/headline_comparison.csv, results/tradeoffs.csv, results/obs_wse_peaks.csv, results/obs_wave_peaks.csv, figures/main_result.png. Paper baselines transcribed verbatim from Loveland Tables 4-7.
+Source files: results/headline_comparison.csv, results/tradeoffs.csv, results/obs_wse_peaks.csv, results/obs_wave_peaks.csv. Paper baselines transcribed verbatim from Loveland Tables 4-7.
+
+Figures supporting this verdict:
+- figures/main_result.png — storm-averaged trade-off summary (compute cost left panel; WSE-RMSE + Hs-RMSE right panel).
+- figures/fig10_11_obs_equivalent.png — observational side of Loveland Figs 10/11. Per-gauge observed peak WSE for both storms (14 Ike, 13 Ida) overlaid with Loveland's storm-averaged Gen1/Gen2/Gen3 RMSE bands. The three bands are visually indistinguishable on the same axis as the bars; the inter-config Δ (≤ 0.007 m Ike, ≤ 0.001 m Ida) is invisible at the scale of the inter-gauge peak variability (0.47-3.81 m). This is the WSE-invariance finding made visual.
+- figures/fig5_6_obs_equivalent.png — observational side of Loveland Figs 5/6. Per-buoy observed peak Hs and Tp for both storms with Loveland's storm-averaged Gen1/Gen2/Gen3 RMSE bands. The Ida Tp Gen3 = 9.96 s band is visibly separated from the Gen1/Gen2 bands at ~5 s — the factor-of-2 wave-statistics divergence that Loveland's text and the chain's Quote already carve out as a sensitivity caveat.
+- figures/fig7_8_buoy_winds_equivalent.png — observational side of Loveland Figs 7/8. NDBC buoy wind-speed time series for the 4 Ike-track buoys (42001, 42002, 42019, 42035 — all retrievable) and the 4 Ida-track buoys (42040, 42039 retrievable; 42001 retired 2021-07-25 before Ida; 42007 not in the 2021 NDBC stdmet archive). ADCIRC wind forcing not reproduced because the model output is not retrievable. Loveland's own Fig 8 panels visibly show ADCIRC's Ida winds diverging from the buoy series near landfall — direct visual evidence for the wind-field-accuracy conditioning Loveland states in §6 and that the Outcome's Conclusion carves out.
 
 Run-time (1064 Frontera cores), per storm, with Loveland's prose-summary framings as reference points:
 - Loveland §5.1: "around 1.5 times longer" (50 percent increase). Loveland §6: "about a 40 percent increase".

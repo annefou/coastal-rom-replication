@@ -16,7 +16,9 @@
 # %% [markdown]
 # # 04 - Figures
 #
-# Three figures for the Loveland et al. 2024 stat-level reproduction:
+# Figures for the Loveland et al. 2024 stat-level reproduction.
+#
+# Context plots (existing):
 #
 # - `figures/gauge_map.png` - cartopy map of all gauges and buoys for Ike+Ida.
 # - `figures/wse_timeseries_example.png` - one well-located gauge per storm,
@@ -25,6 +27,20 @@
 #   headline claim: wall-clock cost (Table 4) versus accuracy across
 #   Gen1 / Gen2 / Gen3 source-term packages at both gauges (WSE RMSE) and
 #   buoys (Hs RMSE).
+#
+# Figure-level reproduction of Loveland's observational side (added in
+# Phase 3 follow-up):
+#
+# - `figures/fig10_11_obs_equivalent.png` - observed peak WSE per gauge with
+#   Loveland's storm-averaged RMSE bands (paper Figs 10 + 11 equivalent).
+# - `figures/fig7_8_buoy_winds_equivalent.png` - NDBC buoy wind speed series
+#   for the buoys plotted in Loveland's Figs 7 (Ike) and 8 (Ida).
+# - `figures/fig5_6_obs_equivalent.png` - observed peak Hs and Tp per buoy
+#   with Loveland's storm-averaged RMSE bands (paper Figs 5 + 6 equivalent).
+#
+# All three reproduction figures plot only the observational side; modelled
+# bars / lines are deliberately omitted because the DesignSafe deposit (DOI
+# 10.17603/DS2-7HBT-EF65) requires an authenticated account.
 
 # %%
 from pathlib import Path
@@ -47,8 +63,15 @@ FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 ds_wse_ike   = xr.open_dataset(PROC_DIR / "ike" / "wse.nc")
 ds_wse_ida   = xr.open_dataset(PROC_DIR / "ida" / "wse.nc")
 ds_waves_ike = xr.open_dataset(PROC_DIR / "ike" / "waves.nc")
+ds_waves_ida = xr.open_dataset(PROC_DIR / "ida" / "waves.nc")
 headline = pd.read_csv(RESULTS_DIR / "headline_comparison.csv")
 obs_wse = pd.read_csv(RESULTS_DIR / "obs_wse_peaks.csv")
+obs_waves = pd.read_csv(RESULTS_DIR / "obs_wave_peaks.csv")
+
+# Per USER_PREFERENCES.md (Phase 2 / 03_analysis.py): the config palette is
+# shared across all trade-off plots and the new figure-level reproduction
+# panels, so the eye keeps the same colour mapping across figures.
+CONFIG_COLORS = {"Gen1": "#3498db", "Gen2": "#e67e22", "Gen3": "#27ae60"}
 
 # %% [markdown]
 # ## Figure 1 - gauge / buoy map
@@ -145,7 +168,7 @@ plt.show()
 df = headline[headline["config"].isin(["Gen1", "Gen2", "Gen3"])].copy()
 configs = ["Gen1", "Gen2", "Gen3"]
 storms = ["ike", "ida"]
-config_colors = {"Gen1": "#3498db", "Gen2": "#e67e22", "Gen3": "#27ae60"}
+config_colors = CONFIG_COLORS
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharey=False)
 
@@ -201,4 +224,335 @@ fig.suptitle(
 )
 fig.tight_layout()
 fig.savefig(FIGURES_DIR / "main_result.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# %% [markdown]
+# ## Figure A - observed peak WSE per gauge (Loveland Figs 10 + 11 equivalent)
+#
+# Two panels (Ike top, Ida bottom). For each panel, the bars are the observed
+# peak WSE per gauge (NOAA CO-OPS, NAVD88 where available) over the
+# wind-forcing window. Horizontal reference lines are the storm-averaged
+# Gen1 / Gen2 / Gen3 WSE RMSE values transcribed verbatim from the paper's
+# body text (notebook 03). The modelled bars from Loveland's Fig 10/11 cannot
+# be reproduced here because the ADCIRC+SWAN outputs sit behind a DesignSafe
+# authentication gate.
+#
+# The bands span across all gauge bars; their tight clustering is the
+# WSE-invariance finding (delta RMSE across configs <= 0.007 m for Ike,
+# <= 0.001 m for Ida) that conditions the headline trade-off.
+
+# %%
+# Storm-averaged WSE RMSE values for each Gen1/2/3 config, looked up from the
+# transcribed-baseline table written by notebook 03.
+def storm_rmse(storm: str, cfg: str, col: str) -> float:
+    sub = headline[(headline["storm"] == storm) & (headline["config"] == cfg)]
+    if sub.empty:
+        return float("nan")
+    return float(sub.iloc[0][col])
+
+
+def gauge_order(storm: str) -> list:
+    """Loveland's gauge order: by gauge_no index (1a, 2a, ... or 1b, 2b, ...)."""
+    sub = obs_wse[obs_wse["storm"] == storm].copy()
+    sub["order"] = sub["gauge_no"].str.extract(r"(\d+)").astype(int)
+    return sub.sort_values("order")["gauge_no"].tolist()
+
+
+fig, axes = plt.subplots(2, 1, figsize=(11.5, 8), sharex=False)
+
+for ax, storm, panel_color, gauge_color in zip(
+    axes,
+    ("ike", "ida"),
+    ("Hurricane Ike (Sept 5-14, 2008)", "Hurricane Ida (Aug 26 - Sep 4, 2021)"),
+    ("#c0392b", "#d4a017"),
+):
+    order = gauge_order(storm)
+    sub = (
+        obs_wse[obs_wse["storm"] == storm]
+        .set_index("gauge_no")
+        .reindex(order)
+        .reset_index()
+    )
+    x_pos = np.arange(len(sub))
+    ax.bar(
+        x_pos,
+        sub["obs_peak_m"],
+        color=gauge_color,
+        edgecolor="white",
+        linewidth=0.6,
+        label="Observed peak WSE",
+    )
+    # Annotate bar heights so the eye can sanity-check against Loveland's
+    # peak-error percentages.
+    for j, val in enumerate(sub["obs_peak_m"]):
+        if np.isfinite(val):
+            ax.text(j, val + 0.05, f"{val:.2f}", ha="center", va="bottom", fontsize=7.5)
+    # Reference bands at storm-averaged RMSE per config.
+    for cfg in ("Gen1", "Gen2", "Gen3"):
+        rmse_val = storm_rmse(storm, cfg, "WSE_RMSE_m")
+        ax.axhline(
+            rmse_val,
+            color=CONFIG_COLORS[cfg],
+            linewidth=1.4,
+            linestyle="--",
+            label=f"{cfg} avg RMSE = {rmse_val:.3f} m",
+        )
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(sub["gauge_no"], rotation=0, fontsize=9)
+    ax.set_ylabel("Peak WSE (m)")
+    ax.set_title(panel_color)
+    ax.set_ylim(0, max(sub["obs_peak_m"].max() * 1.18, 0.5))
+    ax.legend(loc="upper right", fontsize=8, ncol=2, framealpha=0.92)
+    # In-panel annotation summarising the WSE-invariance finding for the
+    # storm. Loveland's three configs' avg RMSE differ by <=0.007 m for Ike
+    # and <=0.001 m for Ida - smaller than typical CO-OPS observational
+    # uncertainty (~0.02 m).
+    if storm == "ike":
+        delta = (
+            storm_rmse("ike", "Gen3", "WSE_RMSE_m")
+            - storm_rmse("ike", "Gen1", "WSE_RMSE_m")
+        )
+        msg = f"Delta RMSE across configs = {delta:+.3f} m (within observational noise)"
+    else:
+        delta = (
+            storm_rmse("ida", "Gen3", "WSE_RMSE_m")
+            - storm_rmse("ida", "Gen1", "WSE_RMSE_m")
+        )
+        msg = f"Delta RMSE across configs = {delta:+.3f} m (within observational noise)"
+    ax.text(
+        0.01,
+        0.97,
+        msg,
+        transform=ax.transAxes,
+        fontsize=8.5,
+        verticalalignment="top",
+        bbox=dict(boxstyle="round", facecolor="white", alpha=0.85, edgecolor="grey"),
+    )
+
+fig.suptitle(
+    "Observed peak WSE per gauge with Loveland (2024) storm-averaged RMSE bands",
+    fontsize=12,
+)
+# Caption beneath the panels - explains why no modelled bars are shown.
+fig.text(
+    0.5,
+    -0.01,
+    "Loveland Fig 10 / 11 equivalent - model bars not reproduced "
+    "(DesignSafe deposit DOI 10.17603/DS2-7HBT-EF65 access-restricted).",
+    ha="center",
+    fontsize=9,
+    style="italic",
+)
+fig.tight_layout()
+fig.savefig(FIGURES_DIR / "fig10_11_obs_equivalent.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# %% [markdown]
+# ## Figure B - NDBC buoy wind speed (Loveland Figs 7 + 8 equivalent)
+#
+# Two-column layout (Ike left, Ida right) by four-row (one buoy per row).
+# Plots only the NDBC standard-met wind-speed series; the ADCIRC wind-input
+# trace is omitted because the model output is access-restricted.
+#
+# Buoy selections per Loveland Section 5.1:
+# - Ike Fig 7: 42001, 42002, 42019, 42035.
+# - Ida Fig 8: 42001, 42007, 42039, 42040. Loveland's Fig 8 shows ADCIRC's
+#   Ida winds visibly diverging from the buoys near landfall, which is the
+#   wind-field-accuracy caveat that conditions the headline Outcome.
+#
+# Axis convention follows Loveland: x = days since first wind-forcing time
+# stamp, y = wind speed in m/s. Buoys missing in the 2021 NDBC archive
+# (42001 retired July 2021; 42007 dropped from stdmet 2021) are flagged in
+# the panel.
+
+# %%
+IKE_WIND_BUOYS = ["42001", "42002", "42019", "42035"]
+IDA_WIND_BUOYS = ["42001", "42007", "42039", "42040"]
+
+
+def wind_series(ds_waves: xr.Dataset, buoy_id: str):
+    """Return (days_since_t0, wspd_m_per_s) for the given buoy."""
+    ids = list(ds_waves["buoy"].values.astype(str))
+    if buoy_id not in ids:
+        return None, None
+    idx = ids.index(buoy_id)
+    times = pd.to_datetime(ds_waves["time"].values)
+    t0 = times[0]
+    days = (times - t0).total_seconds() / 86400.0
+    wspd = ds_waves["WSPD"].isel(buoy=idx).values
+    return days, wspd
+
+
+fig, axes = plt.subplots(4, 2, figsize=(12, 11), sharex="col")
+
+storm_specs = [
+    ("ike", "Hurricane Ike", IKE_WIND_BUOYS, ds_waves_ike, 0),
+    ("ida", "Hurricane Ida", IDA_WIND_BUOYS, ds_waves_ida, 1),
+]
+
+for storm, storm_label, buoys, ds_waves_storm, col in storm_specs:
+    for row, buoy_id in enumerate(buoys):
+        ax = axes[row, col]
+        days, wspd = wind_series(ds_waves_storm, buoy_id)
+        if days is None or wspd is None or not np.isfinite(wspd).any():
+            ax.text(
+                0.5,
+                0.5,
+                f"NDBC {buoy_id}: not available in archive\n({storm_label} window)",
+                transform=ax.transAxes,
+                ha="center",
+                va="center",
+                fontsize=10,
+                color="#7f8c8d",
+            )
+            ax.set_ylim(0, 30)
+        else:
+            ax.plot(
+                days,
+                wspd,
+                color="#2c3e50",
+                linewidth=0.9,
+                marker=".",
+                markersize=2.5,
+                label="NDBC observed",
+            )
+            peak = np.nanmax(wspd) if np.isfinite(wspd).any() else float("nan")
+            if np.isfinite(peak):
+                ax.set_ylim(0, max(peak * 1.18, 15))
+        ax.set_ylabel(f"NDBC {buoy_id}\nwind speed (m/s)", fontsize=9)
+        if row == 0:
+            ax.set_title(f"{storm_label} buoys", fontsize=11)
+        if row == 3:
+            ax.set_xlabel("Days since first wind-forcing timestamp")
+
+fig.suptitle("NDBC buoy wind speed during storm windows", fontsize=12)
+fig.text(
+    0.5,
+    -0.005,
+    "Loveland Fig 7 / 8 equivalent - buoy data only; ADCIRC wind line not "
+    "reproduced (model output access-restricted).\n"
+    "Loveland's Fig 8 visibly shows ADCIRC's Ida winds diverging from the "
+    "buoys near landfall - this wind-field accuracy caveat conditions the "
+    "headline Outcome.",
+    ha="center",
+    fontsize=8.5,
+    style="italic",
+)
+fig.tight_layout()
+fig.savefig(FIGURES_DIR / "fig7_8_buoy_winds_equivalent.png", dpi=150, bbox_inches="tight")
+plt.show()
+
+# %% [markdown]
+# ## Figure C - observed peak Hs and Tp per buoy (Loveland Figs 5 + 6 equivalent)
+#
+# Two rows (Ike top, Ida bottom) x two columns (Hs left, Tp right). Bars are
+# observed peaks at each Table 3 buoy in the wind-forcing window. Reference
+# bands are storm-averaged Hs / Tp RMSE per Gen config (transcribed from the
+# paper).
+#
+# Notable feature: Loveland's Ida Tp Gen3 = 9.960 s is about a factor of two
+# worse than Gen1 (4.865 s) - this divergence is the wave-stats sensitivity
+# carved out by the chain's Quote.
+
+# %%
+def buoy_order(storm: str) -> list:
+    sub = obs_waves[obs_waves["storm"] == storm].copy()
+    sub["order"] = sub["buoy_no"].str.extract(r"(\d+)").astype(int)
+    return sub.sort_values("order")["buoy_no"].tolist()
+
+
+fig, axes = plt.subplots(2, 2, figsize=(13, 8), sharex=False)
+
+panel_specs = [
+    ("ike", "Hs", "obs_peak_Hs_m", "Hs_RMSE_m", "Peak Hs (m)",
+     "Hurricane Ike", 0, 0, "#2980b9"),
+    ("ike", "Tp", "obs_peak_Tp_s", "Tp_RMSE_s", "Peak Tp (s)",
+     "Hurricane Ike", 0, 1, "#16a085"),
+    ("ida", "Hs", "obs_peak_Hs_m", "Hs_RMSE_m", "Peak Hs (m)",
+     "Hurricane Ida", 1, 0, "#2980b9"),
+    ("ida", "Tp", "obs_peak_Tp_s", "Tp_RMSE_s", "Peak Tp (s)",
+     "Hurricane Ida", 1, 1, "#16a085"),
+]
+
+for storm, metric, obs_col, rmse_col, ylabel, storm_label, r, c, bar_color in panel_specs:
+    ax = axes[r, c]
+    order = buoy_order(storm)
+    sub = (
+        obs_waves[obs_waves["storm"] == storm]
+        .set_index("buoy_no")
+        .reindex(order)
+        .reset_index()
+    )
+    x_pos = np.arange(len(sub))
+    bar_vals = sub[obs_col].to_numpy(dtype="float64")
+    ax.bar(
+        x_pos,
+        np.where(np.isfinite(bar_vals), bar_vals, 0.0),
+        color=bar_color,
+        edgecolor="white",
+        linewidth=0.6,
+        label=f"Observed peak {metric}",
+    )
+    # Annotate any buoy where data is missing.
+    for j, val in enumerate(bar_vals):
+        if not np.isfinite(val):
+            ax.text(
+                j,
+                0.15,
+                "n/a",
+                ha="center",
+                va="bottom",
+                fontsize=8,
+                color="#7f8c8d",
+            )
+        else:
+            ax.text(
+                j,
+                val + (0.04 if metric == "Hs" else 0.25),
+                f"{val:.1f}",
+                ha="center",
+                va="bottom",
+                fontsize=7.5,
+            )
+    # Reference bands per config.
+    for cfg in ("Gen1", "Gen2", "Gen3"):
+        rmse_val = storm_rmse(storm, cfg, rmse_col)
+        ax.axhline(
+            rmse_val,
+            color=CONFIG_COLORS[cfg],
+            linewidth=1.4,
+            linestyle="--",
+            label=f"{cfg} avg RMSE = {rmse_val:.3f}",
+        )
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(sub["buoy_no"], rotation=0, fontsize=9)
+    ax.set_ylabel(ylabel)
+    finite_peak = np.nanmax(bar_vals) if np.isfinite(bar_vals).any() else 1.0
+    rmse_max = max(
+        storm_rmse(storm, "Gen1", rmse_col),
+        storm_rmse(storm, "Gen2", rmse_col),
+        storm_rmse(storm, "Gen3", rmse_col),
+    )
+    ax.set_ylim(0, max(finite_peak, rmse_max) * 1.22)
+    ax.set_title(f"{storm_label} - {metric}", fontsize=10)
+    ax.legend(loc="upper right", fontsize=7.5, ncol=1, framealpha=0.92)
+
+fig.suptitle(
+    "Observed peak Hs and Tp per buoy with Loveland (2024) "
+    "storm-averaged RMSE bands",
+    fontsize=12,
+)
+fig.text(
+    0.5,
+    -0.01,
+    "Loveland Fig 5 / 6 partial equivalent - model bars not reproduced. "
+    "Ida Tp Gen3 = 9.96 s is approximately twice the Gen1 value (4.87 s); "
+    "this divergence is Loveland's quantification of the wave-stats "
+    "sensitivity carried in the chain's Quote.",
+    ha="center",
+    fontsize=8.5,
+    style="italic",
+)
+fig.tight_layout()
+fig.savefig(FIGURES_DIR / "fig5_6_obs_equivalent.png", dpi=150, bbox_inches="tight")
 plt.show()
