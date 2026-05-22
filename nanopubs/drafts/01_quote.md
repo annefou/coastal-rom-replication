@@ -33,10 +33,10 @@ Verbatim from the paper PDF in `paper/`. Character-for-character. ≤ 500 chars 
 > _Read the PDF first. Don't paraphrase from memory. See `docs/verify-before-drafting.md`._
 
 ```
-
+The usage of the reduced order source terms yielded significant savings in computational cost. Additionally, relatively low amounts of additional error with respect to observations during the simulations with reduced order source terms are observed in our computational experiments.
 ```
 
-Character count: ___ / 500.
+Character count: 282 / 500.
 
 ### Comment (textarea, required)
 
