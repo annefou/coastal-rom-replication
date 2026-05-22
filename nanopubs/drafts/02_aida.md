@@ -37,6 +37,24 @@ In coupled ADCIRC+SWAN (storm-surge plus spectral-wave) hindcasts of Gulf of Mex
 
 Character count: 332. One sentence, declarative ("yields no improvement … while increasing"), absolute (no "may"/"could"/"tends to"). The inline parenthetical gloss `(storm-surge plus spectral-wave)` is added to honour the AIDA "Independent" requirement — a reader of just this nanopub should be able to parse what kind of system the claim is about without first reading the Quote. The wave-stats sensitivity in the Quote's second sentence is deliberately not linked here — it would be a second AIDA on a separate Claim, per the Atomic AIDA rule.
 
+#### Plain-language reading (orchestration note, NOT a published field)
+
+For reviewers who don't model storm surge for a living. This block is part of the working draft, not part of the nanopub assertion that gets published.
+
+> When you simulate a Gulf of Mexico hurricane using a coupled storm-surge + wave model, choosing the most physically detailed (3rd-generation ST6) version of the wave physics does not give you more accurate water levels at coastal tide gauges than the simpler 1st- or 2nd-generation versions — but it does cost more compute time.
+
+Term-by-term:
+
+| Phrase in the AIDA | Plain-language unpacking |
+|---|---|
+| coupled ADCIRC+SWAN hindcasts | A retrospective simulation (storm already happened, track known) using two models running together — ADCIRC handles water levels and currents, SWAN handles waves. They exchange information every coupling timestep. |
+| third-generation ST6 source-term package in SWAN | The most physically elaborate version of SWAN's wave-physics calculations (Rogers et al. 2012). "Source terms" are the parts that compute wind→wave energy input, wave–wave interactions, and dissipation. |
+| first- or second-generation source-term packages | The simpler 1980s-era wave-physics parameterisations. Loveland tests both as baselines. |
+| no improvement in water-surface-elevation RMSE at NOAA gauges | The accuracy of predicted water levels at tide gauges — quantified by root-mean-square error in metres — is essentially the same whichever source-term package you use. Loveland reports Δ ≤ 0.007 m for Ike and ≤ 0.001 m for Ida. |
+| while increasing wall-clock run time | The elaborate version takes meaningfully longer to compute — about 44 percent more for Ike, about 70 percent more for Ida, on Loveland's 1064-core Frontera setup. |
+
+Every term in the sentence is load-bearing for the testability of the claim — dropping any of them makes the claim either unfalsifiable or too general. The density is appropriate for the domain (SWAN / coastal-modelling research) the claim lives in.
+
 ### Select related topics/tags (dropdown, optional)
 
 Predefined topic vocabulary — open the dropdown on the platform and pick from these candidates (don't paste them as free text):
