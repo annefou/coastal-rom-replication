@@ -47,7 +47,7 @@ Subtitle: *"Our interpretation or explanation of why this quotation is relevant.
 Why this quote matters and what the replication tests. Connect the paper's claim to the work this repo does. Don't repeat the quote.
 
 ```
-
+We deliberately anchor on §6 Conclusions rather than the abstract: the abstract frames the reduced-order trade-off unconditionally ("relatively low additional error"), whereas this sentence pair carries Loveland's own conditioning — the trade-off is acceptable *if water surface elevations are the primary interest*, and *not* if significant wave height near hurricane tracks matters. This chain tests that conditional trade-off as a Reproduction Study (same ADCIRC+SWAN v41.31, same Ike and Ida storms, same Gen1/Gen2/Gen3 source-term taxonomy, no model re-runs) against the publicly retrievable NOAA gauge baseline and Loveland's own §5.1 and Tables 4-7 numerical values. The quote contains two findings; the downstream AIDA anchors on finding (1), the WSE-only conditional trade-off, while finding (2), wave-statistics sensitivity near storm tracks, is preserved as context for the Outcome's limitations field.
 ```
 
 ## Publication note
