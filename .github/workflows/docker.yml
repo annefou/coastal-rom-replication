@@ -23,9 +23,13 @@ jobs:
       - name: Skip if template has not been initialised
         id: guard
         run: |
-          placeholder_files=$(grep -rln '{{[A-Z_]\+}}' . --include='*.md' --include='*.yml' --include='*.yaml' --include='*.json' --include='*.cff' --include='*.py' --include='*.toml' 2>/dev/null | grep -v 'claude/skills/init-template/' || true)
+          # Exclude .claude/skills/init-template/ and docs/ — both legitimately
+          # reference placeholder syntax in their documentation. Operational
+          # placeholders live in CITATION.cff, codemeta.json, README.md,
+          # pixi.toml, etc. — never in docs/.
+          placeholder_files=$(grep -rln '{{[A-Z_]\+}}' . --include='*.md' --include='*.yml' --include='*.yaml' --include='*.json' --include='*.cff' --include='*.py' --include='*.toml' 2>/dev/null | grep -v -e 'claude/skills/init-template/' -e 'docs/' || true)
           if [ -n "$placeholder_files" ]; then
-            echo "::notice::Template placeholders detected ({{...}} tokens). Run /init-template before releasing. Skipping Docker build."
+            echo "::notice::Template placeholders detected ({{...}} tokens) in: $placeholder_files. Run /init-template before releasing. Skipping Docker build."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
