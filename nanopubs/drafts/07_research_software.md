@@ -27,7 +27,7 @@ The full name or title of the software.
 ### Repository URL (text input, required)
 
 ```
-https://github.com/{{REPO_ORG}}/{{REPO_NAME}}
+https://github.com/annefou/coastal-rom-replication
 ```
 
 ### Research Project (text input, optional)

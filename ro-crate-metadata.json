@@ -14,12 +14,12 @@
     {
       "@id": "./",
       "@type": ["Dataset", "ResearchObject"],
-      "name": "{{REPO_NAME}}",
-      "description": "{{REPO_DESCRIPTION}}",
-      "datePublished": "{{RELEASE_DATE}}",
+      "name": "coastal-rom-replication",
+      "description": "FORRT replication study of a coupled wave-circulation model with reduced order source terms in the Gulf of Mexico (Loveland et al., Ocean Modelling 2024).",
+      "datePublished": "2026-05-22",
       "license": { "@id": "https://spdx.org/licenses/MIT" },
-      "publisher": { "@id": "{{AUTHOR_ORCID}}" },
-      "author": [{ "@id": "{{AUTHOR_ORCID}}" }],
+      "publisher": { "@id": "https://orcid.org/0000-0002-1784-2920" },
+      "author": [{ "@id": "https://orcid.org/0000-0002-1784-2920" }],
       "mainEntity": { "@id": "Snakefile" },
       "hasPart": [
         { "@id": "Snakefile" },
@@ -37,14 +37,14 @@
         { "@id": "nanopubs/PUBLISHED.md" }
       ],
       "citation": [
-        { "@id": "https://doi.org/{{PAPER_DOI}}" }
+        { "@id": "https://doi.org/10.1016/j.ocemod.2024.102387" }
       ]
     },
     {
-      "@id": "{{AUTHOR_ORCID}}",
+      "@id": "https://orcid.org/0000-0002-1784-2920",
       "@type": "Person",
-      "name": "{{AUTHOR_NAME}}",
-      "affiliation": "{{AUTHOR_AFFILIATION}}"
+      "name": "Anne Fouilloux",
+      "affiliation": "Lifewatch-ERIC, Spain"
     },
     {
       "@id": "Snakefile",
@@ -130,10 +130,10 @@
       "description": "URIs of the published Quote / AIDA / FORRT Claim / Replication Study / Replication Outcome / CiTO Citation steps."
     },
     {
-      "@id": "https://doi.org/{{PAPER_DOI}}",
+      "@id": "https://doi.org/10.1016/j.ocemod.2024.102387",
       "@type": "ScholarlyArticle",
-      "name": "{{PAPER_TITLE}}",
-      "datePublished": "{{PAPER_YEAR}}"
+      "name": "Efficacy of reduced order source terms for a coupled wave-circulation model in the Gulf of Mexico",
+      "datePublished": "2024"
     }
   ]
 }
