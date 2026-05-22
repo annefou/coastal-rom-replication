@@ -32,10 +32,10 @@
 Atomic, Independent, Declarative, Absolute. One empirical finding. Must end with a full stop.
 
 ```
-In coupled ADCIRC+SWAN hindcasts of Gulf of Mexico hurricanes, the third-generation ST6 source-term package in SWAN yields no improvement in water-surface-elevation root-mean-square error at NOAA gauges over the first- or second-generation source-term packages, while increasing wall-clock run time.
+In coupled ADCIRC+SWAN (storm-surge plus spectral-wave) hindcasts of Gulf of Mexico hurricanes, the third-generation ST6 source-term package in SWAN yields no improvement in water-surface-elevation root-mean-square error at NOAA gauges over the first- or second-generation source-term packages, while increasing wall-clock run time.
 ```
 
-Character count: 299. One sentence, declarative ("yields no improvement … while increasing"), absolute (no "may"/"could"/"tends to"). The wave-stats sensitivity in the Quote's second sentence is deliberately not linked here — it would be a second AIDA on a separate Claim, per the Atomic AIDA rule.
+Character count: 332. One sentence, declarative ("yields no improvement … while increasing"), absolute (no "may"/"could"/"tends to"). The inline parenthetical gloss `(storm-surge plus spectral-wave)` is added to honour the AIDA "Independent" requirement — a reader of just this nanopub should be able to parse what kind of system the claim is about without first reading the Quote. The wave-stats sensitivity in the Quote's second sentence is deliberately not linked here — it would be a second AIDA on a separate Claim, per the Atomic AIDA rule.
 
 ### Select related topics/tags (dropdown, optional)
 
