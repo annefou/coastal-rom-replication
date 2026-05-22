@@ -34,8 +34,10 @@ Stat-level reproduction of the Loveland et al. (2024) coupled ADCIRC+SWAN reduce
 
 URI of the Claim published in step 03. Pull from `nanopubs/PUBLISHED.md`.
 
+> _If the Claim was published via Nanodash (`w3id.org/np/...` namespace), the platform's search may not find it — paste the URI manually._
+
 ```
-_To be filled in Phase 5 once step 03 Claim is published._
+_(step 03 Claim URI — paste here after publication; format https://w3id.org/sciencelive/np/RA… or https://w3id.org/np/RA… if published via Nanodash)_
 ```
 
 ### Describe what part of the claim is reproduced/replicated (textarea, required)
@@ -87,14 +89,21 @@ What's different from the original method. Verify against the actual code, don't
 
 Provide labels (not QIDs) — the Wikidata search picks up labels.
 
-- _Label 1: ___
-- _Label 2: ___
+- storm surge
+- Hurricane Ike
+- Hurricane Ida
+- ADCIRC
+- reduced-order model
+
+(Alternative candidates if any of the above fail to resolve in the Wikidata search box: `SWAN (wave model)`, `spectral wave model`, `coastal engineering`, `computational cost`.)
 
 ### Search discipline (Wikidata) (search, optional)
 
 Provide labels.
 
-- _Discipline label: ___
+- physical oceanography
+
+(Alternative candidates if `physical oceanography` does not resolve: `coastal engineering`, `computational fluid dynamics`.)
 
 ## Publication note
 

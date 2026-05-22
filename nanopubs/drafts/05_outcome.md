@@ -27,7 +27,7 @@ Coastal-ROM trade-off reproduction outcome (Loveland et al. 2024)
 URI of the Replication Study published in step 04. Pull from `nanopubs/PUBLISHED.md`.
 
 ```
-_To be filled in Phase 5 once step 04 Replication Study is published._
+_(step 04 Replication Study URI — paste here after publication; format https://w3id.org/sciencelive/np/RA…)_
 ```
 
 ### Repository URL (text input, required)
@@ -54,11 +54,19 @@ Rationale: the Quote (step 01) was deliberately re-anchored from the abstract to
 
 ### Confidence level (dropdown, required)
 
-_Vocabulary not yet captured — set during Phase 5 field-by-field drafting via the nanopub-drafter agent._
+Vocabulary (per `docs/forrt-form-fields.md`): `VeryHighConfidence` / `HighConfidence` / `Moderate` / `LowConfidence` / `VeryLowConfidence`. Independent of Validation status — signals strength of evidence, not direction of agreement.
+
+- [ ] VeryHighConfidence
+- [x] **HighConfidence**
+- [ ] Moderate
+- [ ] LowConfidence
+- [ ] VeryLowConfidence
 
 ```
-
+HighConfidence
 ```
+
+Rationale: strong evidence — all four model-fidelity tables (Tables 4–7) reproduce in full from Loveland's published values, the observational baseline is independently retrievable end-to-end from NOAA CO-OPS and NDBC (14/14 Ike + 13/13 Ida WSE gauges, 9/10 NDBC buoys), and the headline storm peaks match NHC historical records. Held back from `VeryHighConfidence` because the ADCIRC+SWAN model runs themselves were not independently re-executed (DesignSafe deposit access-restricted — see Limitations item 1), so this is stat-level reproduction with strong observational sanity-checking rather than full model-level reproducibility.
 
 ### Describe the overall conclusion about the original claim (textarea, required)
 
