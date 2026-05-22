@@ -14,17 +14,35 @@
 
 ## Headline claim
 
-The single sentence in the paper that this replication tests. Verbatim from the abstract.
+The sentence in the paper that this replication tests. Verbatim from §6 Conclusions (p. 12).
 
-> "The usage of the reduced order source terms yielded significant savings in computational cost. Additionally, relatively low amounts of additional error with respect to observations during the simulations with reduced order source terms are observed in our computational experiments."
+> "For instance, it may be worth the savings in computation if only water surface elevations are of primary interest as opposed to wave statistics. However, large sensitivities to the source term choice in global output of significant wave height near hurricane tracks were observed."
 
-Alternative candidate sentences considered:
+(280 characters, two sentences, fits Quote-whole-text mode.)
 
-- (Abstract, follow-on caveat): "However, large changes in global model outputs of the wave statistics were observed based on the choice of source terms particularly near the track of each hurricane." — Rejected as the headline because it expresses the *qualifier*, not the *trade-off* claim itself. We will preserve it as nuance in the Comment / Outcome.
-- (Conclusions, §6): "Upgrading from Gen1 or Gen2 source terms to the ST6 Gen3 source terms resulted in about a 40% increase in run time. The effects of the choice of source terms (Gen1, Gen2 or Gen3) on average WSE at NOAA gauges only changed RMSE relative to the gauges by about 0.007 m." — Rejected because it is two sentences; the abstract headline is more compact and is the single sentence the abstract foreshadows.
-- (Abstract, framing): "this study investigates the potential consequences of using simplified (reduced order) source terms within the wave model component of the coupled wave-circulation model." — Rejected as a *framing/motivation* sentence, not an empirical claim.
+### Re-anchor: why the conclusion sentence, not the abstract sentence
 
-The selected headline pairs a savings claim with a low-error claim and is the most compact statement of the paper's central empirical finding. It is 309 characters as a two-sentence excerpt and fits the Quote-whole-text mode (< 500 chars).
+The original Phase 1 first-pass headline was drawn from the abstract:
+
+> _(Abstract)_ "The usage of the reduced order source terms yielded significant savings in computational cost. Additionally, relatively low amounts of additional error with respect to observations during the simulations with reduced order source terms are observed in our computational experiments."
+
+That abstract sentence is **unconditional** with respect to two conditions that §6 Conclusions makes explicit:
+
+- **WSE-only-interest scope:** the conclusion's phrase "if only water surface elevations are of primary interest as opposed to wave statistics" conditions the trade-off on what you care about. The abstract's "with respect to observations" lumps WSE gauges and wave buoys together as if the trade-off applied uniformly across both, which the paper's own Tables 5-7 contradict (Tp Gen3 Ida = 9.96 s vs Gen1 = 4.87 s — factor-of-2 worse).
+- **Wind-field accuracy:** the conclusion's §6 second paragraph adds "If the meteorological forcing is not sufficiently accurate, which is common in forecasting scenarios, then the additional computational cost associated with the detailed Gen3 source terms may not improve accuracy of the model. If there is access to highly accurate wind fields, as was the case for the Ike simulation in this study, then Gen3 source terms should yield improved accuracy in WSE and wave statistics when compared to Gen1 or Gen2."
+
+A Validated verdict against the unconditional abstract Quote would have required the Outcome to walk back Loveland's framing — flagging "WSE-only" and "high-wind-accuracy regime" as Outcome-side qualifications that aren't in the Quote. Downstream citers reading only the Quote + Validated verdict would draw a stronger conclusion than the chain actually supports. Re-anchoring to the conclusion sentence puts the WSE-only-interest condition into the Quote verbatim, so the Validated verdict means "the conditional claim holds, conditioned exactly as Loveland conditioned it." This is the chain-internal-consistency principle from `CLAUDE.md` § Universal anti-patterns.
+
+### Alternative candidates considered for the re-anchor
+
+- **(Conclusions, p. 11):** "Upgrading from Gen1 or Gen2 source terms to the ST6 Gen3 source terms resulted in about a 40% increase in run time. The effects of the choice of source terms (Gen1, Gen2 or Gen3) on average WSE at NOAA gauges only changed RMSE relative to the gauges by about 0.007 m." (264 chars.) Rejected: quantitatively crispest but the WSE-only-interest conditioning is only implicit (the word "only" qualifies the *number*, not the user's *interest*) and the wave-stats caveat is dropped.
+- **(Conclusions, p. 12):** "A key observation from this study is that if the meteorological forcing is not sufficiently accurate, which is common in forecasting scenarios, then the additional computational cost associated with the detailed Gen3 source terms may not improve accuracy of the model." (270 chars.) Rejected: single-sentence (avoids Atomic-AIDA risk) but only carries the wind-field condition; drops the WSE-only-interest condition entirely. Half the fix.
+- **(Abstract, follow-on caveat):** "However, large changes in global model outputs of the wave statistics were observed based on the choice of source terms particularly near the track of each hurricane." Rejected as the headline because it expresses the *qualifier*, not the *trade-off* claim itself.
+- **(Abstract, framing):** "this study investigates the potential consequences of using simplified (reduced order) source terms within the wave model component of the coupled wave-circulation model." Rejected as a *framing/motivation* sentence, not an empirical claim.
+
+### Atomic-AIDA disposition
+
+The selected Quote contains two findings — (1) the WSE-only conditional trade-off, (2) the wave-stats sensitivity near storm tracks. Per `CLAUDE.md` § Atomic AIDA, the Phase 5 step-2 AIDA sentence MUST anchor on exactly one. We anchor on **finding (1) — the WSE-only conditional trade-off** because it is what the paper's title ("Efficacy of reduced order source terms") advertises and what our stat-level reproduction directly tested (RMSE invariance ≤ 0.007 m across configs from Table 4). Finding (2) — wave-stats sensitivity — moves to the Outcome's Limitations field as context (Loveland's own quantification, not new replication evidence). The wind-field-accuracy condition (dropped by the Quote) lives in the Replication Study's Methodology / Scope field.
 
 ## Methodology summary
 

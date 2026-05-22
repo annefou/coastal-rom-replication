@@ -28,15 +28,17 @@ Format: starts with `10.` — bare DOI, **NOT** `https://doi.org/...` form.
 
 ### Quoted Text (textarea, required)
 
-Verbatim from the paper PDF in `paper/`. Character-for-character. ≤ 500 chars in whole-text mode.
+Verbatim from the paper PDF in `paper/`, §6 Conclusions (p. 12). Character-for-character. ≤ 500 chars in whole-text mode.
 
 > _Read the PDF first. Don't paraphrase from memory. See `docs/verify-before-drafting.md`._
+>
+> **Re-anchor note (Phase 1 second pass):** This Quote was originally drawn from the abstract; that sentence was unconditional ("relatively low amounts of additional error with respect to observations"), whereas §6 Conclusions explicitly conditions the trade-off on (a) WSE-only-interest scope and (b) wind-field-accuracy assumption. Anchoring on the conclusion preserves Loveland's own conditioning so the downstream Validated verdict is internally consistent with the Quote. See `00_paper_summary.md` § Headline claim for the full rationale.
 
 ```
-The usage of the reduced order source terms yielded significant savings in computational cost. Additionally, relatively low amounts of additional error with respect to observations during the simulations with reduced order source terms are observed in our computational experiments.
+For instance, it may be worth the savings in computation if only water surface elevations are of primary interest as opposed to wave statistics. However, large sensitivities to the source term choice in global output of significant wave height near hurricane tracks were observed.
 ```
 
-Character count: 282 / 500.
+Character count: 280 / 500.
 
 ### Comment (textarea, required)
 
