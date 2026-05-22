@@ -23,6 +23,7 @@ xarray = ">=2024.6"
 scipy = "*"
 matplotlib = "*"
 pyarrow = "*"
+seaborn = "*"              # whitegrid style declared in USER_PREFERENCES.md
 # --- notebook execution + Jupyter Book ---
 jupytext = "*"
 jupyterlab = "*"
@@ -30,21 +31,13 @@ nbclient = "*"
 ipykernel = "*"
 # --- pipeline driver ---
 snakemake = "*"
-# --- replace/extend with the deps your replication needs ---
-# Examples (uncomment as needed):
-# statsmodels = "*"          # GLM/GLMM regression
-# scikit-learn = "*"         # classical ML
-# pyproj = "*"               # CRS + map projections
-# cartopy = "*"              # geographic plotting
-# netcdf4 = "*"              # NetCDF I/O — preferred over .npz for arrays (see DOMAIN.md)
-# zarr = "*"                 # Zarr — preferred for arrays >2 GB or cloud-archived (see DOMAIN.md)
-# cdsapi = "*"               # Copernicus Climate Data Store
-# copernicusmarine = "*"     # Copernicus Marine Service
-# healpix-geo = "*"          # HEALPix on geo data — preferred (use nest=True — see DOMAIN.md)
-# healpy = "*"               # HEALPix on pure-sphere (astrophysics) only
-# rasterio = "*"             # raster I/O
-# geopandas = "*"            # vector I/O
-# dask = "*"                 # out-of-core / parallel
+# --- coastal ROM replication deps ---
+netcdf4 = "*"              # NetCDF I/O for cleaned gauge/buoy time series (DOMAIN.md)
+requests = "*"             # NOAA CO-OPS + NDBC HTTP downloads
+tqdm = "*"                 # progress bars for downloads
+pyproj = "*"               # CRS for gauge/buoy lon/lat
+cartopy = "*"              # geographic plotting for gauge/buoy map
+geopandas = "*"            # gauge/buoy point geodataframes
 
 # Pip-only deps go in [pypi-dependencies]. Conda-forge is preferred where available.
 # [pypi-dependencies]
