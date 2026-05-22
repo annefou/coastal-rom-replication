@@ -4,21 +4,21 @@ This file is the canonical registry of published nanopub URIs for this replicati
 
 ## Chain
 
-| Step | Template | URI | Published |
+| Step | Template | URI |
 |---|---|---|---|
-| 01 | Quote-with-comment (or PICO / PCC) | _not yet published_ | |
-| 02 | AIDA Sentence | _not yet published_ | |
-| 03 | FORRT Claim | _not yet published_ | |
-| 04 | FORRT Replication Study | _not yet published_ | |
-| 05 | FORRT Replication Outcome | _not yet published_ | |
-| 06 | CiTO Citation | _not yet published_ | |
+| 01 | Quote-with-comment (or PICO / PCC) | https://w3id.org/sciencelive/np/RA_tuuJYawQ_zY1L6R0puEuiDVSo7JoHNfYQ9ULXPERZk |
+| 02 | AIDA Sentence | _not yet published_ | 
+| 03 | FORRT Claim | _not yet published_ |
+| 04 | FORRT Replication Study | _not yet published_ |
+| 05 | FORRT Replication Outcome | _not yet published_ |
+| 06 | CiTO Citation | _not yet published_ |
 
 ## Optional layers
 
-| Step | Template | URI | Published |
+| Step | Template | URI |
 |---|---|---|---|
-| 07 | Research Software (if applicable) | _not applicable / not yet published_ | |
-| 08 | Research Synthesis (if applicable) | _not applicable / not yet published_ | |
+| 07 | Research Software (if applicable) | _not applicable / not yet published_ |
+| 08 | Research Synthesis (if applicable) | _not applicable / not yet published_ |
 
 ## Format
 

@@ -47,10 +47,10 @@ Subtitle: *"Our interpretation or explanation of why this quotation is relevant.
 Why this quote matters and what the replication tests. Connect the paper's claim to the work this repo does. Don't repeat the quote.
 
 ```
-We anchor on §6 Conclusions, not the abstract: the abstract frames the trade-off unconditionally, while this sentence pair carries Loveland's own conditioning — acceptable *if water surface elevations are the primary interest*, not if significant wave height near hurricane tracks matters. This chain tests the conditional trade-off as a Reproduction Study (same ADCIRC+SWAN v41.31, same Ike and Ida storms, no model re-runs) against the publicly retrievable NOAA gauge baseline and Loveland's own §5.1 plus Tables 4-7 values.
+Loveland's §6 Conclusions presents the reduced-order trade-off conditionally: Gen1 or Gen2 SWAN source terms are acceptable substitutes for the third-generation ST6 (Gen3) package when water-surface elevation at NOAA gauges is the primary modelling target, but the cost saving does not transfer to applications where significant wave-height accuracy near hurricane tracks matters. The paper's abstract states the trade-off without these two conditions, which risks over-citation as a general endorsement of reduced-order source terms. This chain tests the conditional version of the claim against public NOAA observations and Loveland's published per-configuration error statistics.
 ```
 
-(Comment trimmed from 913 to ~525 chars to honour the brevity discipline target in `docs/forrt-form-fields.md`; the AIDA atomic-split foreshadow dropped here is recoverable downstream when the AIDA nanopub publishes.)
+(Comment rewritten from the orchestrator-process framing to the nanopub-reader framing: leads with what Loveland claims, treats the abstract framing as motivation for the choice of quote, drops "anchor on" jargon, drops FORRT-internal terms like "Reproduction Study" and section-specific forward references that a reader of the Quote nanopub can't resolve from this nanopub alone.)
 
 ## Publication note
 
