@@ -93,7 +93,6 @@ Provide labels (not QIDs) — the Wikidata search picks up labels.
 - Hurricane Ike
 - Hurricane Ida
 - ADCIRC
-- reduced-order model
 
 (Alternative candidates if any of the above fail to resolve in the Wikidata search box: `SWAN (wave model)`, `spectral wave model`, `coastal engineering`, `computational cost`.)
 

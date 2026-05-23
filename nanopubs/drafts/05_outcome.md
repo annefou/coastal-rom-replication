@@ -57,16 +57,10 @@ Rationale: the Quote (step 01) was deliberately re-anchored from the abstract to
 Vocabulary (per `docs/forrt-form-fields.md`): `VeryHighConfidence` / `HighConfidence` / `Moderate` / `LowConfidence` / `VeryLowConfidence`. Independent of Validation status — signals strength of evidence, not direction of agreement.
 
 - [ ] VeryHighConfidence
-- [x] **HighConfidence**
-- [ ] Moderate
+- [] HighConfidence
+- [x] **Moderate**
 - [ ] LowConfidence
 - [ ] VeryLowConfidence
-
-```
-HighConfidence
-```
-
-Rationale: strong evidence — all four model-fidelity tables (Tables 4–7) reproduce in full from Loveland's published values, the observational baseline is independently retrievable end-to-end from NOAA CO-OPS and NDBC (14/14 Ike + 13/13 Ida WSE gauges, 9/10 NDBC buoys), and the headline storm peaks match NHC historical records. Held back from `VeryHighConfidence` because the ADCIRC+SWAN model runs themselves were not independently re-executed (DesignSafe deposit access-restricted — see Limitations item 1), so this is stat-level reproduction with strong observational sanity-checking rather than full model-level reproducibility.
 
 ### Describe the overall conclusion about the original claim (textarea, required)
 

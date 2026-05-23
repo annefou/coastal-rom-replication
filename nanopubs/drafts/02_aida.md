@@ -61,10 +61,6 @@ Predefined topic vocabulary — open the dropdown on the platform and pick from 
 
 - storm surge
 - hurricane
-- coastal ocean modelling
-- spectral wave model
-- computational cost
-- reproducibility
 
 Pick the 2-4 that are actually offered in the dropdown. If none of these labels exist in the platform vocabulary, leave this field empty rather than inventing a label.
 
